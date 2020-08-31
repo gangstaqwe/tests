@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 
 namespace CheckAltronSite.PageObjects
 {
@@ -17,7 +19,13 @@ namespace CheckAltronSite.PageObjects
 
         public MainMenuPageObject ClickToAmurCalculator()
         {
+            String myDownloadFolder = @"C:\Users\usr\Downloads";
+            var options = new ChromeOptions();
+            options.AddUserProfilePreference("download.default_directory", myDownloadFolder);
+            
             webdriver.FindElement(_AmurCalculatorClick).Click();
+            webdriver.FindElement(_CheckButtonDownload).Click();
+            TypeOfWait.WaitInterval(2);
 
             return new MainMenuPageObject(webdriver);
         }

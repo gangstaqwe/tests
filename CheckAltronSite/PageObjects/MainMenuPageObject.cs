@@ -20,13 +20,11 @@ namespace CheckAltronSite.PageObjects
         private readonly By _OptionalEquipment = By.CssSelector("div ul li li a[href='/audio-registratory-amur/dopolnitelnoe-oborudovanie.html']");
         private readonly By _ButtonDownload = By.CssSelector("div ul li a[href='/skachat.html']");
         private readonly By _ButtonSertificate = By.CssSelector("a[href='/certifikaty.html']");
-        private readonly By _ChangedLanguage = By.CssSelector("li a[href='/en/']");
-        private readonly string _About = "About";
+        private readonly By _ChangedLanguage = By.CssSelector("li a[href='/en/']");      
         private readonly By _ElementAudioRegistration = By.CssSelector("ul li[title='Аудиорегистраторы']");
         private readonly By _ImagesAudioregistration = By.CssSelector("p a[href='/audio-registratory-amur.html']");
         private readonly By _GPSNetMonitorImage = By.CssSelector("ul li[title='GPS мониторинг']");
-        private readonly By _ImagesGPSMon = By.CssSelector("p a[href='/gps-monitoring-navitron.html']");
-        private readonly string _GPSMon = "GPS мониторинг";
+        private readonly By _ImagesGPSMon = By.CssSelector("img[src='/images/slide_2.png']");
         private readonly By _ButtonSupport = By.CssSelector("li[title='Поддержка']");
         private readonly By _WaitImagesSupport = By.CssSelector("p a img[src='/images/slide_3.png']");
 
@@ -118,49 +116,30 @@ namespace CheckAltronSite.PageObjects
             webdriver.FindElement(_ChangedLanguage).Click();
             TypeOfWait.WaitInterval();
         }
-        public bool CheckLanguage() // проверяю наличие элемента та странице
-        {
-            try
-            {
-                webdriver.PageSource.Contains(_About);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
+       
 
         public void CheckAudioregistrationHomePage()
         {
             webdriver.FindElement(_ElementAudioRegistration).Click();
-            TypeOfWait.WaitElement(webdriver, _ImagesAudioregistration);            
+            TypeOfWait.WaitElement(webdriver, _ImagesAudioregistration);
+            Assert.IsTrue(webdriver.FindElement(_ImagesAudioregistration).Displayed);
         }
 
-        public void CheckHomePageGPSMon()
+        public void CheckHomePageGPSMon(string html_fragment = "GPS мониторинг")
         {
             webdriver.FindElement(_GPSNetMonitorImage).Click();
             TypeOfWait.WaitInterval();
+            Assert.IsTrue(webdriver.FindElement(_ImagesGPSMon).Displayed); // проверяю что отображается картинка
             webdriver.FindElement(_ImagesGPSMon).Click();
-            TypeOfWait.WaitInterval();
-        }
-        public bool CheckPageContainsGPSMon()
-        {
-            try
-            {
-                webdriver.PageSource.Contains(_GPSMon);
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
-        }
+            Assert.IsTrue(webdriver.PageSource.Contains(html_fragment));
+
+        }    
 
         public void HomePageSupport()
         {
             webdriver.FindElement(_ButtonSupport).Click();
-            TypeOfWait.WaitElement(webdriver, _WaitImagesSupport);
+            TypeOfWait.WaitInterval();
+            Assert.IsTrue(webdriver.FindElement(_WaitImagesSupport).Displayed);
             webdriver.FindElement(_WaitImagesSupport).Click();
         }
  

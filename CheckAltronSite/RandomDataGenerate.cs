@@ -65,6 +65,7 @@ namespace CheckAltronSite
             string phoneNumber = "";
 
             for(int i=0;i<array.Length;i++)
+
             {
                 array[i] = random.Next(33, 125);
                 phoneNumber += array[i];

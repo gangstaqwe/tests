@@ -2,6 +2,7 @@ using CheckAltronSite.PageObjects;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System.IO;
 using System.Threading;
 
 namespace CheckAltronSite
@@ -103,6 +104,7 @@ namespace CheckAltronSite
                 .ButtonDownload()                
                 .ClickToAmurCalculator();
                 Assert.IsTrue(ListWithDownload.CheckButtonDownload()); // провер€ю наличие кнопки —качать на странице
+                Assert.IsTrue(File.Exists(@"C:\Users\usr\Downloads\AmurCalculator.zip")); // проверка на то что файл скачан
         }
 
         [Test]
@@ -122,7 +124,7 @@ namespace CheckAltronSite
             var mainMenu = new MainMenuPageObject(webdriver);
             mainMenu
                 .ChangeLanguage();
-            Assert.IsTrue(mainMenu.CheckLanguage());
+            Assert.AreEqual("Home", webdriver.Title); // провер€ю что название вкладки стало Home
 
         }
         [Test]
@@ -139,8 +141,6 @@ namespace CheckAltronSite
             var mainMenu = new MainMenuPageObject(webdriver);
             mainMenu
                 .CheckHomePageGPSMon();
-            Assert.IsFalse(mainMenu.CheckPageContainsGPSMon());
-                
         }
         [Test]
         public void HomePageSupportImages()
@@ -156,7 +156,6 @@ namespace CheckAltronSite
             var mainMenu = new ClickToButtonOrder(webdriver);
             mainMenu
                 .FormOrder(RandomDataGenerate.GenerateRandowNumberWithDiapazon(), RandomDataGenerate.RandomName(),RandomDataGenerate.RandomOrganization(), RandomDataGenerate.GeneratePhoneNumber(CountryCode.Ukraine, LengthPhoneNumber.Ukraine),RandomDataGenerate.GenerateRandomEmail(EmailAdress.Gmail));
-            TypeOfWait.WaitInterval();
 
         }
     }
